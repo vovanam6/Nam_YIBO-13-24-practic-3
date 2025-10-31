@@ -2,42 +2,97 @@ using System;
 using System.Collections.Generic;
 
 public class FibonacciSearch {
+    // Метод поиска Фибоначчи в отсортированном массиве
+    // arr - отсортированный массив, x - искомый элемент
     public static int Search(List<int> arr, int x) {
         int n = arr.Count;
-        int fibM2 = 0, fibM1 = 1, fibM = fibM2 + fibM1;
+
+        // Инициализация чисел Фибоначчи
+        // fibM2 - (m-2)-е число Фибоначчи
+        // fibM1 - (m-1)-е число Фибоначчи  
+        // fibM - m-е число Фибоначчи (должно быть >= n)
+        int fibM2 = 0; // F(0)
+        int fibM1 = 1; // F(1)
+        int fibM = fibM2 + fibM1; // F(2)
+
+        // Находим наименьшее число Фибоначчи, которое больше или равно n
+        // Это нужно для определения размера "области поиска" в терминах Фибоначчи
         while (fibM < n) {
             fibM2 = fibM1;
             fibM1 = fibM;
             fibM = fibM2 + fibM1;
         }
+
+        // offset - маркер для устраненных элементов спереди
         int offset = -1;
+
+        // Пока есть элементы для проверки
+        // fibM хранит размер текущей области поиска в терминах Фибоначчи
         while (fibM > 1) {
+            // Проверяем элемент на позиции i
+            // i = min(offset + fibM2, n-1) чтобы не выйти за границы массива
             int i = Math.Min(offset + fibM2, n - 1);
+
+            Console.WriteLine($"Проверяем позицию {i}, значение {arr[i]}, fibM={fibM}, fibM2={fibM2}");
+
+            // Если x больше элемента на позиции i
             if (arr[i] < x) {
+                // Отбрасываем левую часть (элементы до i)
+                // Обновляем числа Фибоначчи для правой части
                 fibM = fibM1;
                 fibM1 = fibM2;
                 fibM2 = fibM - fibM1;
-                offset = i;
-            } else if (arr[i] > x) {
+                offset = i; // Сдвигаем offset на текущую позицию
+            }
+            // Если x меньше элемента на позиции i
+            else if (arr[i] > x) {
+                // Отбрасываем правую часть (элементы после i)
+                // Обновляем числа Фибоначчи для левой части
                 fibM = fibM2;
                 fibM1 = fibM1 - fibM2;
                 fibM2 = fibM - fibM1;
-            } else {
+            }
+            // Элемент найден
+            else {
                 return i;
             }
         }
-        if (fibM1 == 1 && offset + 1 < n && arr[offset + 1] == x)
+
+        // Сравниваем последний элемент с x
+        // Проверяем элемент на позиции offset + 1 (если он существует)
+        if (fibM1 == 1 && offset + 1 < n && arr[offset + 1] == x) {
             return offset + 1;
+        }
+
+        // Элемент не найден
         return -1;
     }
 
     public static void Main() {
+        // Отсортированный массив для поиска
         List<int> arr = new List<int> {10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100};
         int x = 85;
+        
+        Console.WriteLine("Массив: " + string.Join(" ", arr));
+        Console.WriteLine("Ищем элемент: " + x);
+        Console.WriteLine("--- Процесс поиска Фибоначчи ---");
+        
         int result = Search(arr, x);
-        if (result != -1)
-            Console.WriteLine("Элемент найден на позиции: " + result);
-        else
+        
+        if (result != -1) {
+            Console.WriteLine($"\nЭлемент найден на позиции: {result}");
+        } else {
+            Console.WriteLine("\nЭлемент не найден");
+        }
+        
+        // Демонстрация поиска другого элемента
+        Console.WriteLine("\n--- Поиск элемента 35 ---");
+        x = 35;
+        result = Search(arr, x);
+        if (result != -1) {
+            Console.WriteLine($"Элемент найден на позиции: {result}");
+        } else {
             Console.WriteLine("Элемент не найден");
+        }
     }
 }
