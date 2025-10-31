@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+
+public class FibonacciSearch {
+    public static int Search(List<int> arr, int x) {
+        int n = arr.Count;
+        int fibM2 = 0, fibM1 = 1, fibM = fibM2 + fibM1;
+        while (fibM < n) {
+            fibM2 = fibM1;
+            fibM1 = fibM;
+            fibM = fibM2 + fibM1;
+        }
+        int offset = -1;
+        while (fibM > 1) {
+            int i = Math.Min(offset + fibM2, n - 1);
+            if (arr[i] < x) {
+                fibM = fibM1;
+                fibM1 = fibM2;
+                fibM2 = fibM - fibM1;
+                offset = i;
+            } else if (arr[i] > x) {
+                fibM = fibM2;
+                fibM1 = fibM1 - fibM2;
+                fibM2 = fibM - fibM1;
+            } else {
+                return i;
+            }
+        }
+        if (fibM1 == 1 && offset + 1 < n && arr[offset + 1] == x)
+            return offset + 1;
+        return -1;
+    }
+
+    public static void Main() {
+        List<int> arr = new List<int> {10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100};
+        int x = 85;
+        int result = Search(arr, x);
+        if (result != -1)
+            Console.WriteLine("Элемент найден на позиции: " + result);
+        else
+            Console.WriteLine("Элемент не найден");
+    }
+}
