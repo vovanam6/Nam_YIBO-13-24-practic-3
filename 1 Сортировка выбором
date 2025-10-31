@@ -3,23 +3,37 @@ using System;
 public class SelectionSort {
     public static void Sort(int[] arr) {
         int n = arr.Length;
+        
+        // Основной цикл - проходим по всем элементам массива
         for (int i = 0; i < n; i++) {
+            // Предполагаем, что текущий элемент - минимальный
             int minIndex = i;
+
+            // Внутренний цикл - ищем минимальный элемент в неотсортированной части
+            // Начинаем с i+1, так как элементы до i уже отсортированы
             for (int j = i + 1; j < n; j++) {
+                // Если находим элемент меньше текущего минимального, обновляем minIndex
                 if (arr[j] < arr[minIndex]) {
                     minIndex = j;
                 }
             }
+
+            // Меняем местами текущий элемент с найденным минимальным
+            // Это перемещает минимальный элемент в его окончательную позицию
             int temp = arr[i];
             arr[i] = arr[minIndex];
             arr[minIndex] = temp;
+            
+            // После этой итерации элемент arr[i] находится на своем окончательном месте
         }
     }
 
     public static void Main() {
         int[] testArray = {64, 25, 12, 22, 11};
         Console.WriteLine("Исходный массив: " + string.Join(" ", testArray));
+        
         Sort(testArray);
+        
         Console.WriteLine("Отсортированный массив: " + string.Join(" ", testArray));
     }
 }
