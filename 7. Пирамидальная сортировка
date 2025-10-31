@@ -3,28 +3,49 @@ using System;
 public class HeapSort {
     public static void Sort(int[] arr) {
         int n = arr.Length;
+
+        // Построение max-heap (кучи с наибольшим элементом в корне)
+        // Начинаем с последнего нелистового узла (n/2 - 1)
+        // и двигаемся к корню (индекс 0)
         for (int i = n / 2 - 1; i >= 0; i--)
             Heapify(arr, n, i);
+
+        // Один за другим извлекаем элементы из кучи
         for (int i = n - 1; i > 0; i--) {
+            // Перемещаем текущий корень (максимальный элемент) в конец
             int temp = arr[0];
             arr[0] = arr[i];
             arr[i] = temp;
+
+            // Вызываем heapify на уменьшенной куче
+            // Восстанавливаем свойства max-heap для корня
             Heapify(arr, i, 0);
         }
     }
 
+    // Функция для преобразования поддерева в max-heap
+    // arr - массив, n - размер кучи, i - корневой индекс поддерева
     private static void Heapify(int[] arr, int n, int i) {
-        int largest = i;
-        int left = 2 * i + 1;
-        int right = 2 * i + 2;
+        int largest = i;     // Инициализируем наибольший элемент как корень
+        int left = 2 * i + 1;  // left = 2*i + 1 (индекс левого потомка)
+        int right = 2 * i + 2; // right = 2*i + 2 (индекс правого потомка)
+
+        // Если левый дочерний элемент больше корня
         if (left < n && arr[left] > arr[largest])
             largest = left;
+
+        // Если правый дочерний элемент больше, чем наибольший на данный момент
         if (right < n && arr[right] > arr[largest])
             largest = right;
+
+        // Если наибольший элемент не корень
         if (largest != i) {
+            // Меняем корень с наибольшим дочерним элементом
             int swap = arr[i];
             arr[i] = arr[largest];
             arr[largest] = swap;
+
+            // Рекурсивно преобразуем затронутое поддерево
             Heapify(arr, n, largest);
         }
     }
