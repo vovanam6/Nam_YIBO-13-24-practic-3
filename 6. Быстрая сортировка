@@ -2,34 +2,57 @@ using System;
 
 public class QuickSort {
     public static void Sort(int[] array, int low, int high) {
+        // Базовый случай рекурсии - если в массиве 1 элемент или меньше
         if (low < high) {
+            // Разбиваем массив и получаем индекс опорного элемента
+            // После partition все элементы слева от pi меньше опорного,
+            // все справа - больше
             int pi = Partition(array, low, high);
-            Sort(array, low, pi - 1);
-            Sort(array, pi + 1, high);
+
+            // Рекурсивно сортируем левую и правую части
+            // Опорный элемент уже на своем месте
+            Sort(array, low, pi - 1);  // Левая часть
+            Sort(array, pi + 1, high); // Правая часть
         }
     }
 
     private static int Partition(int[] array, int low, int high) {
+        // Выбираем последний элемент作为опорный
         int pivot = array[high];
+        
+        // Индекс для отслеживания позиции, где будут элементы меньше опорного
         int i = low - 1;
+
+        // Проходим по всем элементам от low до high-1
         for (int j = low; j < high; j++) {
+            // Если текущий элемент меньше или равен опорному
             if (array[j] <= pivot) {
-                i++;
+                i++; // Увеличиваем границу для меньших элементов
+                
+                // Меняем местами array[i] и array[j]
+                // Это перемещает меньший элемент влево
                 int temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
             }
         }
+
+        // Помещаем опорный элемент на правильную позицию
+        // Между меньшими и большими элементами
         int temp2 = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp2;
+
+        // Возвращаем индекс опорного элемента
         return i + 1;
     }
 
     public static void Main() {
         int[] array = {10, 7, 8, 9, 1, 5};
         Console.WriteLine("Исходный массив: " + string.Join(" ", array));
+        
         Sort(array, 0, array.Length - 1);
+        
         Console.WriteLine("Отсортированный массив: " + string.Join(" ", array));
     }
 }
