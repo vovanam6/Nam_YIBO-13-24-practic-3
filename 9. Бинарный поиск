@@ -2,20 +2,45 @@ using System;
 
 public class BinarySearch {
     public static int Search(int[] array, int target) {
-        int left = 0, right = array.Length - 1;
+        // Границы поиска - изначально весь массив
+        int left = 0;
+        int right = array.Length - 1;
+
+        // Пока есть область для поиска
         while (left <= right) {
+            // Находим середину текущей области поиска
+            // Используем формулу left + (right - left) / 2 для избежания переполнения
             int mid = left + (right - left) / 2;
-            if (array[mid] == target) return mid;
-            if (array[mid] > target) right = mid - 1;
-            else left = mid + 1;
+
+            // Проверяем средний элемент
+            if (array[mid] == target) {
+                // Элемент найден, возвращаем его индекс
+                return mid;
+            }
+
+            // Если искомый элемент меньше среднего
+            if (array[mid] > target) {
+                // Сужаем область поиска до левой половины
+                // Исключаем mid и все элементы справа
+                right = mid - 1;
+            } else {
+                // Искомый элемент больше среднего
+                // Сужаем область поиска до правой половины
+                // Исключаем mid и все элементы слева
+                left = mid + 1;
+            }
         }
+        
+        // Элемент не найден
         return -1;
     }
 
     public static void Main() {
         int[] sortedArray = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
         int target = 7;
+        
         int result = Search(sortedArray, target);
+        
         if (result != -1)
             Console.WriteLine("Элемент найден на позиции: " + result);
         else
