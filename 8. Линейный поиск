@@ -1,20 +1,41 @@
 using System;
 
 public class LinearSearch {
+    // Функция линейного поиска
+    // arr - массив для поиска, target - искомый элемент
     public static int Search(int[] arr, int target) {
+        // Проходим по всем элементам массива последовательно
+        // Начинаем с первого элемента (индекс 0) до последнего
         for (int i = 0; i < arr.Length; i++) {
-            if (arr[i] == target) return i;
+            // Сравниваем текущий элемент с искомым значением
+            if (arr[i] == target) {
+                // Если нашли совпадение, возвращаем индекс элемента
+                // Поиск завершается при первом найденном совпадении
+                return i;
+            }
         }
+        
+        // Если дошли до этой точки, элемент не найден
+        // Возвращаем -1 как индикатор отсутствия элемента
         return -1;
     }
 
     public static void Main() {
+        // Создаем тестовый массив (может быть неотсортированным)
         int[] array = {3, 5, 2, 7, 9, 1, 4};
-        int target = 7;
+        int target = 7; // Искомое значение
+        
+        Console.WriteLine("Массив: " + string.Join(" ", array));
+        Console.WriteLine("Ищем элемент: " + target);
+        
+        // Вызываем функцию поиска
         int result = Search(array, target);
-        if (result != -1)
-            Console.WriteLine("Элемент найден на позиции: " + result);
-        else
-            Console.WriteLine("Элемент не найден");
+        
+        // Выводим результат поиска
+        if (result != -1) {
+            Console.WriteLine($"Элемент найден на позиции: {result} (индексация с 0)");
+        } else {
+            Console.WriteLine("Элемент не найден в массиве");
+        }
     }
 }
