@@ -2,28 +2,56 @@ using System;
 
 public class MergeSort {
     public static void Sort(int[] arr) {
+        // Базовый случай рекурсии - массив из 0 или 1 элемента уже отсортирован
         if (arr.Length <= 1) return;
+        
+        // Находим середину массива
         int mid = arr.Length / 2;
+        
+        // Создаем два подмассива
         int[] left = new int[mid];
         int[] right = new int[arr.Length - mid];
+        
+        // Копируем данные в подмассивы
         Array.Copy(arr, 0, left, 0, mid);
         Array.Copy(arr, mid, right, 0, arr.Length - mid);
+        
+        // Рекурсивно сортируем обе половины
         Sort(left);
         Sort(right);
+        
+        // Сливаем отсортированные половины
         Merge(arr, left, right);
     }
 
     private static void Merge(int[] arr, int[] left, int[] right) {
         int i = 0, j = 0, k = 0;
+        
+        // Сравниваем элементы из left и right и записываем меньший в arr
         while (i < left.Length && j < right.Length) {
             if (left[i] <= right[j]) {
-                arr[k++] = left[i++];
+                arr[k] = left[i];
+                i++;
             } else {
-                arr[k++] = right[j++];
+                arr[k] = right[j];
+                j++;
             }
+            k++;
         }
-        while (i < left.Length) arr[k++] = left[i++];
-        while (j < right.Length) arr[k++] = right[j++];
+        
+        // Записываем оставшиеся элементы из left (если есть)
+        while (i < left.Length) {
+            arr[k] = left[i];
+            i++;
+            k++;
+        }
+        
+        // Записываем оставшиеся элементы из right (если есть)
+        while (j < right.Length) {
+            arr[k] = right[j];
+            j++;
+            k++;
+        }
     }
 
     public static void Main() {
